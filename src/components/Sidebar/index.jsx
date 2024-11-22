@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { FaBarsStaggered } from "react-icons/fa6";
+import { FaBars } from "react-icons/fa6";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    // Ekran kengligini tekshirish uchun media query
     const mediaQuery = window.matchMedia("(min-width: 1280px)");
     const handleResize = (e) => setOpen(e.matches);
 
-    // Ilk yuklanishda holatni tekshirish
     handleResize(mediaQuery);
-    // Ekran o'lchami o'zgarganda qayta ishlash
     mediaQuery.addEventListener("change", handleResize);
 
     return () => mediaQuery.removeEventListener("change", handleResize);
@@ -111,9 +110,10 @@ const Sidebar = () => {
           </div>
           <button
             onClick={toggleSidebar}
-            className="p-2 text-white bg-blue-600 rounded-md xl:hidden"
+            className="p-2 xl:hidden"
           >
-            menu
+            {open ? <FaBarsStaggered /> :
+            <FaBars />}
           </button>
         </div>
         <Outlet />
