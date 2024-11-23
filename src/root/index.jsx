@@ -1,20 +1,53 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import sidebar from "../utils/sidebar";
 import Sidebar from "../components/Sidebar";
-import Profile from "../components/Profile";
-import Settings from "../components/Settings";
-import Dashboard from "../components/Dashboard";
 
 const Root = () => {
   return (
-    <Router>
       <Routes>
-        <Route path="/" element={<Sidebar />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} />
+        <Route element={<Sidebar />}>
+          {sidebar.map((parent) => {
+            const ElementParent = parent.element;
+            if (parent?.children) {
+              return parent.children.map((child) => {
+                const ElementChild = child.element;
+                return (
+                  <Route
+                    key={child.id}
+                    path={child.path}
+                    element={<ElementChild />}
+                  />
+                );
+              });
+            } else
+              return (
+                !parent.hidden && (
+                  <Route
+                    key={parent.id}
+                    path={parent.path}
+                    element={<ElementParent />}
+                  />
+                )
+              );
+          })}
         </Route>
+
+        {sidebar.map((parent) => {
+          const ElementParent = parent.element;
+          return (
+            parent.hidden && (
+              <Route
+                key={parent.id}
+                path={parent.path}
+                element={<ElementParent />}
+              />
+            )
+          );
+        })}
+
+        <Route path="/" element={<Navigate to={"/analitika"} />} />
+        <Route path="*" element={<h1>404 not found</h1>} />
       </Routes>
-    </Router>
   );
 };
 

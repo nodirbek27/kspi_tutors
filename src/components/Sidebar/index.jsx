@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { FaBars } from "react-icons/fa6";
+import sidebar from "../../utils/sidebar";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
@@ -9,13 +10,10 @@ const Sidebar = () => {
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 1280px)");
     const handleResize = (e) => setOpen(e.matches);
-
     handleResize(mediaQuery);
     mediaQuery.addEventListener("change", handleResize);
-
     return () => mediaQuery.removeEventListener("change", handleResize);
   }, []);
-
   const toggleSidebar = () => {
     setOpen(!open);
   };
@@ -52,6 +50,9 @@ const Sidebar = () => {
         {/* Navigation Links */}
         <div className="flex-grow">
           <ul className="flex flex-col pl-0">
+            {sidebar.map((parent) => {
+              return !parent.hidden 
+            })}
             <li className="w-full mt-0.5">
               <Link
                 to="/dashboard"
